@@ -2,18 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { User } from '../types/User';
 import { get } from '../utils';
 import Friends from './Friends';
+import Feeds from './Feeds';
 
 function Profile({ id }: { id: string }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | undefined>();
 
   const [user, setUser] = useState<User | undefined>();
+  const [friends, setFriends] = useState<User[]>([]);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchUserAndFriends = async () => {
       try {
-        const data = await get<User>(`/users/${id}`);
-        setUser(data);
+        setLoading(true);
+        const [user, friends] = await Promise.all([
+          get<User>(`/users/${id}`),
+          get<User[]>(`/users/${id}/friends`),
+        ]);
+        setUser(user);
+        setFriends(friends);
       } catch (e) {
         setError(e as Error);
       } finally {
@@ -21,7 +28,7 @@ function Profile({ id }: { id: string }) {
       }
     };
 
-    fetchUser();
+    fetchUserAndFriends();
   }, [id]);
 
   if (loading) {
@@ -35,7 +42,8 @@ function Profile({ id }: { id: string }) {
   return (
     <div>
       {user && user.name}
-      <Friends id={id} />
+      <Friends key={user?.id} users={friends} />
+      {user && <Feeds category={user.interests[0]} />}
     </div>
   );
 }
