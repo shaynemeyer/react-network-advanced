@@ -25,10 +25,10 @@ function Feeds({ category }: { category: string }) {
       <h2 className="text-lg text-slate-900 tracking-wider">Your Feeds</h2>
       <div className="flex flex-col py-4 gap-2">
         {feeds.map((feed) => (
-          <>
+          <div key={feed.id}>
             <h3>{feed.title}</h3>
             <p className="text-xs text-slate-600">{feed.description}</p>
-          </>
+          </div>
         ))}
       </div>
     </div>
