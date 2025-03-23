@@ -1,4 +1,7 @@
+import React, { Suspense } from 'react';
 import { User } from '../types/User';
+
+const Friend = React.lazy(() => import('./Friend.tsx'));
 
 function Friends({ users = [] }: { users: User[] }) {
   return (
@@ -6,14 +9,9 @@ function Friends({ users = [] }: { users: User[] }) {
       <h2 className="text-lg text-slate-900 tracking-wider">Friends</h2>
       <div className="flex flex-row pt-4 gap-4">
         {users?.map((user) => (
-          <div key={user.id} className="flex flex-col items-center">
-            <img
-              src={`https://i.pravatar.cc/150?u=${user.id}`}
-              alt={`User ${user.name} avatar`}
-              className="w-8 h-8 rounded-full"
-            />
-            <span className="text-xs text-slate-700">{user.name}</span>
-          </div>
+          <Suspense key={user.id} fallback={<div>Loading...</div>}>
+            <Friend user={user} key={user.id} />
+          </Suspense>
         ))}
       </div>
     </div>
