@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { User } from '../types/User';
 import { get } from '../utils';
+import Friends from './Friends';
 
 function Profile({ id }: { id: string }) {
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,7 +32,12 @@ function Profile({ id }: { id: string }) {
     return <div>Something went wrong...</div>;
   }
 
-  return <div>{user && user.name}</div>;
+  return (
+    <div>
+      {user && user.name}
+      <Friends id={id} />
+    </div>
+  );
 }
 
 export default Profile;

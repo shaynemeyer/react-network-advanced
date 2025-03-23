@@ -1,4 +1,3 @@
-import React from 'react';
 import { User } from '../types/User';
 
 function About({ user }: { user: User }) {
@@ -6,7 +5,7 @@ function About({ user }: { user: User }) {
     <div className="flex flex-row gap-2 pb-4 items-center">
       <div>
         <img
-          src={user?.avatar ?? '/juntao.qiu.avatar.png'}
+          src={user?.avatar}
           alt={`User ${user.name} Avatar`}
           className="w-12 h-12 rounded-full"
         />
